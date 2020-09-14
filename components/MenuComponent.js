@@ -11,7 +11,7 @@ function Menu(props) {
             //     subtitle={item.description}
             //     leftAvatar={{ source: require('./images/uthappizza.png')}}
             // />
-            <ListItem key={index} bottomDivider>
+            <ListItem key={index} bottomDivider onPress={() => props.onPress(item.id)}>
                 <Avatar rounded source={require('./images/uthappizza.png')} />
                 <ListItem.Content>
                     <ListItem.Title>{item.name}</ListItem.Title>
