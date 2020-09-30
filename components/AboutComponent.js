@@ -4,8 +4,13 @@ import { Card,ListItem, Avatar } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LEADERS } from '../shared/leaders';
 
+//loading
+import  { Loading }  from './LoadingComponent';
+
+//redux
 import { connect } from 'react-redux';
 import {  baseUrl } from '../shared/baseUrl';
+
 
 const mapStateToProps = state => {
     return {
@@ -68,8 +73,36 @@ class About extends Component {
             );
 
         }
-        
-        return (
+        if(this.props.leaders.isLoading){
+            return(
+            <ScrollView >
+                <View>
+                     <History />
+                     <Card>
+                     <Card.Title>Corporated Leadership</Card.Title>
+                        <Loading />
+                    </Card>
+                </View>
+            </ScrollView>
+            );
+        }
+
+        else if (this.props.leaders.errMess){
+            return(
+                <ScrollView >
+                <View>
+                     <History />
+                     <Card>
+                     <Card.Title>Corporated Leadership</Card.Title>
+                      <Text>{this.props.leaders.errMess}</Text>
+                    </Card>
+                </View>
+            </ScrollView>
+            );
+        }
+
+        else {
+            return (
             <ScrollView >
            <View>
                 <History />
@@ -85,6 +118,10 @@ class About extends Component {
             </View>
             </ScrollView>
         );
+        
+        }
+        
+        
     }
 }
 

@@ -9,6 +9,10 @@ import { PROMOTIONS } from '../shared/promotions';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 
+import  { Loading }  from './LoadingComponent';
+
+
+
 
 const mapStateToProps = state => {
     return {
@@ -22,23 +26,39 @@ const mapStateToProps = state => {
 
 function RenderItem(props) {
     const item = props.item;
-    
-    if (item != null) {
+
+    if (props.isLoading) {
         return(
-            <Card>
-                <Card.Image source={{uri: baseUrl + item.image}}>
-                  <Card.FeaturedTitle>{item.name}</Card.FeaturedTitle>
-                  <Card.FeaturedSubtitle>{item.designation}</Card.FeaturedSubtitle>  
-                </Card.Image>
-                <Text style={{margin: 10}}>{item.description}</Text>
-            </Card>
+            <Loading />
         );
-    }
+    } 
+    else if (props.errMess) {
+        return(
+            <View>
+                <Text>{props.errMess}</Text>
+            </View>
+        );
+    } 
     else {
-        return(
-            <View></View>
-        );
+                if (item != null) {
+            return(
+                <Card>
+                    <Card.Image source={{uri: baseUrl + item.image}}>
+                    <Card.FeaturedTitle>{item.name}</Card.FeaturedTitle>
+                    <Card.FeaturedSubtitle>{item.designation}</Card.FeaturedSubtitle>  
+                    </Card.Image>
+                    <Text style={{margin: 10}}>{item.description}</Text>
+                </Card>
+            );
+        }
+        else {
+            return(
+                <View></View>
+            );
+        }
     }
+    
+
 }
 
 
@@ -54,9 +74,19 @@ class Home extends Component {
     render() { 
         return ( 
            <ScrollView>
-               <RenderItem item={this.props.dishes.dishes.filter((dish)=> dish.featured)[0]}/>
-               <RenderItem item={this.props.promotions.promotions.filter((promo)=> promo.featured)[0]}/>
-               <RenderItem item={this.props.leaders.leaders.filter((leader)=> leader.featured)[0]}/>
+               <RenderItem item={this.props.dishes.dishes.filter((dish)=> dish.featured)[0]}
+                    isLoading={this.props.dishes.isLoading}
+                    erreMess={this.props.dishes.erreMess} 
+               />
+               <RenderItem item={this.props.promotions.promotions.filter((promo)=> promo.featured)[0]}
+                    isLoading={this.props.promotions.isLoading}
+                    erreMess={this.props.promotions.erreMess} 
+               />
+               <RenderItem item={this.props.leaders.leaders.filter((leader)=> leader.featured)[0]}
+                    isLoading={this.props.leaders.isLoading}
+                    erreMess={this.props.leaders.erreMess}
+                            
+               />
            </ScrollView>
          );
     }
