@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Text,  View, ScrollView, StyleSheet, Switch, Button } from 'react-native';
+import { Text,  View, ScrollView, StyleSheet, Switch, Button, Modal } from 'react-native';
 import {Card } from 'react-native-elements';
 import {Picker} from '@react-native-community/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 // import DateTimePickerModal from "react-native-modal-datetime-picker";
+const options = {month: 'short', day: '2-digit',year: 'numeric' };
 
 class Reservation extends Component {
     constructor(props) {
@@ -11,23 +12,41 @@ class Reservation extends Component {
         this.state = { 
             guests: 1,
             smoking: false,
-            date: new Date(),
+            date: new Date(1598051730000),
+            showModal: false,
             
          }
     }
 
+
     handleReservation() {
         console.log(JSON.stringify(this.state));
+        // this.setState({
+        //     guests: 1,
+        //     smoking: false,
+        //     date: new Date(),
+        // });
+        this.toggleModal();
+    }
+
+    toggleModal() {
+        this.setState({
+            showModal: !this.state.showModal
+        })
+    }
+
+    resetForm() {
         this.setState({
             guests: 1,
             smoking: false,
-            date: new Date(),
+            date: new Date(1598051730000),
+            showModal: false
         });
     }
 
-
  
-    render() { 
+    render() {
+        const state = this.state; 
         return ( 
             <ScrollView>
                 <View style={styles.formRow}>
@@ -62,8 +81,8 @@ class Reservation extends Component {
                     value={this.state.date}
                     date={this.state.date}
                     style={{flex:2, marginRight: 20}}
-                    dateFormat=''
-                    minimumDate={Date.UTC(2019, 2, 18)}
+                    dateFormat="dayofweek day month"
+                    minimumDate={new Date(1950, 0, 1)}
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
                     customStyles={{
@@ -95,6 +114,25 @@ class Reservation extends Component {
                         
                     </Button>
                 </View>
+                <Modal 
+                animationType={'slide'}
+                transparent={false}
+                visible={this.state.showModal}
+                onDismiss={() => {this.toggleModal(); this.resetForm(); }}
+                onRequestClose={() => {this.toggleModal(); this.resetForm();}}
+                >
+                <View style={styles.modal}>
+                    <Text style={styles.modalTitle}>Your Reservation</Text>
+                    <Text style={styles.modalText}> Number of Guests: {this.state.guests.toString()}</Text>
+                    <Text style={styles.modalText}> Smoking?: {this.state.smoking ? 'yes' : 'No'.toString()}</Text>
+                    <Text style={styles.modalText}> Date and Time: {this.state.date.toLocaleDateString("en-US",options)}</Text>
+                    <Button 
+                        onPress={() => {this.toggleModal(); this.resetForm();}}
+                        color='#512da8'
+                        title='Close'
+                    />
+                </View>
+                </Modal>
             </ScrollView>
          );
     }
@@ -114,6 +152,22 @@ const styles = StyleSheet.create({
     },
     formItem: {
         flex: 1
+    },
+    modal: {
+        justifyContent: 'center',
+        margin: 20
+    },
+    modalTitle: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        backgroundColor: '#512DA8',
+        textAlign: 'center',
+        color: 'white',
+        marginBottom: 20
+    },
+    modalText: {
+        fontSize: 18,
+        margin: 10
     }
 })
  
