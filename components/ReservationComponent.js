@@ -46,7 +46,7 @@ class Reservation extends Component {
 
  
     render() {
-        const state = this.state; 
+    
         return ( 
             <ScrollView>
                 <View style={styles.formRow}>

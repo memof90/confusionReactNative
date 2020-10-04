@@ -8,6 +8,7 @@ import { Leaders } from './leaders';
 import { Favorites } from './favorites';
 
 
+
 export const ConfigureStore = () => {
     const store = createStore(
         combineReducers({
