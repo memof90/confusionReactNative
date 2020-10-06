@@ -33,6 +33,8 @@ function RenderDish(props) {
     // const [author, setAuthor] = useState('');
     // const [comment, setComment] = useState('');
     const dish = props.dish;
+    const showModal = props.showModal;
+    const toggleModal = props.toogleModal;
 
     
         // function handleReservation() {
@@ -52,11 +54,11 @@ function RenderDish(props) {
                     <Card.FeaturedTitle>{dish.name}</Card.FeaturedTitle>
                 </Card.Image>
                 <Text style={{margin: 10}}>{dish.description}</Text>
-                <View style={{ flex: 1,
+                <View style={{ 
                                flexDirection: 'row',
                                alignItems: 'center',
                                justifyContent: 'center'}}>
-                <View>
+                <View >
                 <Icon 
                 raised   
                 reverse
@@ -73,7 +75,7 @@ function RenderDish(props) {
                 name='edit'
                 type='font-awesome'
                 color='#512da8'
-                onPress={() => props.showModal ? console.log('Alredy modal'): props.onPress() }
+                onPress={() => props.toggleModal()}
                 />
                 </View> 
                 </View>
@@ -115,13 +117,6 @@ function RenderComments(props) {
         );
     }  
 
-    const renderCommentTwo = () => {
-        return(
-            <View>
-               <Text>{props.postComment.rating}</Text>
-            </View>
-        );
-    }
     return(
         <Card>
         <Card.Title>Comments</Card.Title>
@@ -187,7 +182,8 @@ class Dishdetail extends Component{
               <RenderDish dish={this.props.dishes.dishes[+dishId]} 
                  favorite={this.props.favorites.some(el => el === dishId)}
                  showModal={this.state.showModal}
-                onPress={() => {this.markFavorite(dishId); this.toggleModal()}}
+                onPress={() => {this.markFavorite(dishId)}}
+                toggleModal={() => {this.toggleModal()}}
                /> 
               <RenderComments comments={this.props.comments.comments.filter((comment) => comment.dishId === dishId)} 
                   postComment={this.props.postComment}

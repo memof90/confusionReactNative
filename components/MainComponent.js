@@ -5,6 +5,8 @@ import Home from './HomeComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
 import Reservation from './ReservationComponent';
+import Favorites from './FavoritesComponent';
+
 import { View, Platform, Image, StyleSheet,ScrollView , Text} from 'react-native';
 import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
@@ -175,6 +177,33 @@ function AboutNavegatior({ navigation }) {
       )
     }
 
+    const StackFavirites = createStackNavigator();
+
+    function FavoriteNavigator({navigation}){
+      return(
+        <StackFavirites.Navigator screenOptions={{
+          headerLeft: () => (
+        <Button
+        type="clear"
+          icon={
+            <Icon 
+              name="menu"
+              size={24}
+              color="white"
+              backgroundColor='#512DA8'
+            />
+          }
+          onPress={() => navigation.openDrawer() }
+        />
+      ),  
+            headerStyle: { backgroundColor: '#512DA8' }, 
+            headerTintColor: '#ffffff', 
+            headerTitleStyle: {color: '#ffffff'}}} >
+        <StackFavirites.Screen name="Favorites" component={Favorites} options={{title: 'My Favorites'}} />
+      </StackFavirites.Navigator>
+      )
+    }
+
 
     const CustomDrawerContentComponent = (props) => (
       <ScrollView>
@@ -211,6 +240,8 @@ function MainNavigator() {
         <Icon name='address-card' type='font-awesome' size={24} color={tintColor} />) }} />
        <Drawer.Screen name="Reservation" component={ReservationNavigator} options={{title: 'Reservation Table'}, {drawerLabel: 'Reservation Table'}, {drawerIcon: ({ tintColor}) => (
         <Icon name='cutlery' type='font-awesome' size={24} color={tintColor} />) }} />
+       <Drawer.Screen name="Favorites" component={FavoriteNavigator} options={{title: 'My Favorites'}, {drawerLabel: 'Favorites'}, {drawerIcon: ({ tintColor}) => (
+        <Icon name='heart' type='font-awesome' size={24} color={tintColor} />) }} />
     </Drawer.Navigator>
     </NavigationContainer>
   );
