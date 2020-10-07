@@ -11,6 +11,9 @@ import  { Loading }  from './LoadingComponent';
 import { connect } from 'react-redux';
 import {  baseUrl } from '../shared/baseUrl';
 
+//animated table 
+import * as Animatable from 'react-native-animatable';
+
 
 const mapStateToProps = state => {
     return {
@@ -91,11 +94,13 @@ class About extends Component {
             return(
                 <ScrollView >
                 <View>
-                     <History />
+                    <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+                    <History />
                      <Card>
                      <Card.Title>Corporated Leadership</Card.Title>
                       <Text>{this.props.leaders.errMess}</Text>
                     </Card>
+                    </Animatable.View>
                 </View>
             </ScrollView>
             );
@@ -105,7 +110,8 @@ class About extends Component {
             return (
             <ScrollView >
            <View>
-                <History />
+           <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+            <History />
                 <Card>
                 <Card.Title>Corporated Leadership</Card.Title>
                 <Card.Divider></Card.Divider>
@@ -115,6 +121,7 @@ class About extends Component {
                         keyExtractor={item => item.id.toString()}
                     />
                 </Card>
+           </Animatable.View>
             </View>
             </ScrollView>
         );

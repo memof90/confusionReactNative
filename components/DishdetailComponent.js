@@ -8,6 +8,9 @@ import { baseUrl } from '../shared/baseUrl';
 import { postComment, postFavorite } from '../redux/ActionCreators';
 import {Picker} from '@react-native-community/picker';
 
+//animated table 
+import * as Animatable from 'react-native-animatable';
+
 
 
 const mapStateToProps = state => {
@@ -49,6 +52,7 @@ function RenderDish(props) {
 
     if (dish != null) {
         return(
+            <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
             <Card>
                 <Card.Image source={{uri: baseUrl + dish.image}}>
                     <Card.FeaturedTitle>{dish.name}</Card.FeaturedTitle>
@@ -81,6 +85,8 @@ function RenderDish(props) {
                 </View>
 
             </Card>
+            </Animatable.View>
+
             // <Card 
             // featuredTitle={dish.name}
             // image={require('./images/uthappizza.png')}>
@@ -109,15 +115,19 @@ function RenderComments(props) {
     const renderCommentItem = ({item, index}) => {
 
         return(
+            <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
             <View key={index} style={{margin: 10}}>
                 <Text style={{fontSize: 14}}>{item.comment}</Text>
                 <Text style={{fontSize: 12}}>{item.rating} Starts</Text>
                 <Text style={{fontSize: 12}}>{'--' + item.author+ ', ' + item.date}</Text>
             </View>
+            </Animatable.View>
+
         );
     }  
 
     return(
+        <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
         <Card>
         <Card.Title>Comments</Card.Title>
             <FlatList 
@@ -128,7 +138,9 @@ function RenderComments(props) {
             <Text>{comment}</Text>
             <Text>{rating}</Text>
             <Text>{author} {date}</Text>
-        </Card>
+        </Card> 
+        </Animatable.View>
+
     );
 }
 
