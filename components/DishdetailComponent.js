@@ -144,7 +144,7 @@ class Dishdetail extends Component{
             // comments: COMMENTS,
             // favorites: []
             showModal: false,
-            rating: Number,
+            rating: 4,
             author: '',
             comment: '',
             dishId: '',
