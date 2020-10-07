@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, Animated, StyleSheet} from 'react-native';
+import { View, FlatList, Text, Animated, StyleSheet, Alert } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { Avatar, Icon, ListItem , Tile} from 'react-native-elements';
 import  { Loading }  from './LoadingComponent';
@@ -46,7 +46,22 @@ class Favorites extends Component {
                     outputRange: [-20, 0, 0, 1],
                 });
                 return (
-                    <RectButton style={styles.leftAction} onPress={() => this.props.deleteFavorite(items.id)}>
+                    <RectButton style={styles.leftAction} onPress={() => Alert.alert(
+                        'Delete Favorite?',
+                        'Are you sure you wish to delete the favorite dish ' + items.name + '?',
+                        [
+                            {
+                                text: 'Cancel',
+                                onPress: () => console.log(items.name + 'Not Delete'),
+                                style: 'cancel'
+                            },
+                            {
+                                text: 'Ok',
+                                onPress:() => this.props.deleteFavorite(items.id)
+                            }
+                        ],
+                        { cancelable: false}
+                    )}>
                       <Animated.Text
                         style={[
                           styles.actionText,
