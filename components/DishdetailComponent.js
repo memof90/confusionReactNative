@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { View, Text, ScrollView, FlatList, Modal, StyleSheet, TouchableHighlight, TextInput} from 'react-native';
+import { View, Text, ScrollView, FlatList, Modal, StyleSheet, TouchableHighlight, TextInput, Alert, PanResponder} from 'react-native';
 import { Card, Icon, Rating, AirbnbRating } from 'react-native-elements';
 import { DISHES } from '../shared/dishes';
 import { COMMENTS } from '../shared/comments';
@@ -36,8 +36,40 @@ function RenderDish(props) {
     // const [author, setAuthor] = useState('');
     // const [comment, setComment] = useState('');
     const dish = props.dish;
-    const showModal = props.showModal;
-    const toggleModal = props.toogleModal;
+   
+    const recognizeDrag = ({moveX, moveY, dx, dy }) => {
+        if ( dx < -200 )
+        return true;
+        else
+            return false;
+    }
+
+    const panResponder = PanResponder.create({
+        onStartShouldSetPanResponder: (e, gestureState) => {
+            return true;
+        },
+        onPanResponderEnd: (e, gestureState) => {
+            if (recognizeDrag(gestureState))
+                Alert.alert(
+                    'Add to Favorites?',
+                    'Are you sure you wish to add' + dish.name + ' to your favorites?',
+                    [
+                        {
+                            text: 'Cancel',
+                            onPress: () => console.log('Cancel presed'),
+                            style: 'cancel'
+                        },
+                        {
+                            text: 'OK',
+                            onPress: () => props.favorite ? console.log('Alredy favorite') : props.onPress()
+                        }
+                    ],
+                    {cancelable: false}
+
+                )
+            return true;
+        }
+    })
 
     
         // function handleReservation() {
@@ -52,7 +84,9 @@ function RenderDish(props) {
 
     if (dish != null) {
         return(
-            <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+            <Animatable.View animation="fadeInDown" duration={2000} delay={1000}
+            {...panResponder.panHandlers}
+            >
             <Card>
                 <Card.Image source={{uri: baseUrl + dish.image}}>
                     <Card.FeaturedTitle>{dish.name}</Card.FeaturedTitle>
