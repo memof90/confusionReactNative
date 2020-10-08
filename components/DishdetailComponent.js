@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useRef } from 'react';
 import { View, Text, ScrollView, FlatList, Modal, StyleSheet, TouchableHighlight, TextInput, Alert, PanResponder} from 'react-native';
 import { Card, Icon, Rating, AirbnbRating } from 'react-native-elements';
 import { DISHES } from '../shared/dishes';
@@ -36,6 +36,13 @@ function RenderDish(props) {
     // const [author, setAuthor] = useState('');
     // const [comment, setComment] = useState('');
     const dish = props.dish;
+
+
+//   handleViewRef = ref => this.view = ref;
+ const viewRef = useRef(null);
+
+
+    
    
     const recognizeDrag = ({moveX, moveY, dx, dy }) => {
         if ( dx < -200 )
@@ -47,6 +54,14 @@ function RenderDish(props) {
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: (e, gestureState) => {
             return true;
+        },
+        onPanResponderGrant: () => {
+            if(viewRef) {
+                viewRef.current.rubberBand(1000)
+                .then(endState => console.log(endState.finished  ? 'finished' : 'cancelled'));
+            }
+            // this.view.rubberBand(1000)
+            // .then(endState => console.log(endState.finished  ? 'finished' : 'cancelled'));
         },
         onPanResponderEnd: (e, gestureState) => {
             if (recognizeDrag(gestureState))
@@ -79,12 +94,11 @@ function RenderDish(props) {
     
         //   onValueChange={(itemValue, itemIndex) => 
         //     setRating({rating: itemValue})
-            
-      
 
     if (dish != null) {
         return(
             <Animatable.View animation="fadeInDown" duration={2000} delay={1000}
+            ref={viewRef}
             {...panResponder.panHandlers}
             >
             <Card>
