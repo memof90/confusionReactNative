@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Text,  View, ScrollView, StyleSheet, Switch, Button, Modal } from 'react-native';
+import { Text,  View, ScrollView, StyleSheet, Switch, Button, Modal, Alert } from 'react-native';
 import {Card } from 'react-native-elements';
 import {Picker} from '@react-native-community/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 // import DateTimePickerModal from "react-native-modal-datetime-picker";
+//animated table 
+import * as Animatable from 'react-native-animatable';
 const options = {month: 'short', day: '2-digit',year: 'numeric' };
 
 class Reservation extends Component {
@@ -26,7 +28,23 @@ class Reservation extends Component {
         //     smoking: false,
         //     date: new Date(),
         // });
-        this.toggleModal();
+        Alert.alert(
+            'Your Reservation Ok?',
+            'Number of Guest:' + this.state.guests + ' ' +  'smoking?: ' + this.state.smoking + ' ' +  'Date and Time:' + this.state.date,
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel form'),
+                    style: 'cancel'
+                },
+                {
+                    text:'OK',
+                    onPress: () =>  this.toggleModal()
+                }
+            ],
+            {cancelable: false}
+        )
+       
     }
 
     toggleModal() {
@@ -46,10 +64,10 @@ class Reservation extends Component {
 
  
     render() {
-    
         return ( 
             <ScrollView>
-                <View style={styles.formRow}>
+            <Animatable.View animation="zoomIn" duration={2000} delay={1000}>
+                                <View style={styles.formRow}>
                     <Text style={styles.formLabel}>Number of Guests</Text>
                     <Picker 
                         style={styles.formItem}
@@ -114,6 +132,8 @@ class Reservation extends Component {
                         
                     </Button>
                 </View>
+            </Animatable.View>
+
                 <Modal 
                 animationType={'slide'}
                 transparent={false}

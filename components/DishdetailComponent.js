@@ -1,5 +1,5 @@
 import React, { Component, useState, useRef } from 'react';
-import { View, Text, ScrollView, FlatList, Modal, StyleSheet, TouchableHighlight, TextInput, Alert, PanResponder} from 'react-native';
+import { View, Text, ScrollView, FlatList, Modal, StyleSheet, TouchableHighlight, TextInput, Alert, PanResponder, Button} from 'react-native';
 import { Card, Icon, Rating, AirbnbRating } from 'react-native-elements';
 import { DISHES } from '../shared/dishes';
 import { COMMENTS } from '../shared/comments';
@@ -38,6 +38,7 @@ function RenderDish(props) {
     const dish = props.dish;
 
 
+
 //   handleViewRef = ref => this.view = ref;
  const viewRef = useRef(null);
 
@@ -45,11 +46,36 @@ function RenderDish(props) {
     
    
     const recognizeDrag = ({moveX, moveY, dx, dy }) => {
-        if ( dx < -200 )
+        if ( dx < -200 ) 
+            return true;
+        else 
+             return false;
+        
+           
+        
+        
+    }
+
+    const recognizeDragModal = ({moveX, moveY, dx, dy }) => {
+        if (dx > 200)
         return true;
         else
             return false;
     }
+
+    // const panResponderModal = PanResponder.create({
+    //     onStartShouldSetPanResponder: (e, gestureState) => {
+    //         return true;
+    //     },
+    //     onPanResponderEnd: (e, gestureState) => {
+    //         if (recognizeDrag(gestureState))
+    //         onPress: () => props.toggleModal()
+
+    //         return true
+    //     }
+
+        
+    // })
 
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: (e, gestureState) => {
@@ -82,8 +108,17 @@ function RenderDish(props) {
                     {cancelable: false}
 
                 )
+            if(recognizeDragModal(gestureState))
+            props.toggleModal()
+
             return true;
-        }
+        },
+        // onPanResponderStart: (e, gestureState) => {
+        //     if(recognizeDragModal(gestureState))
+        //     props.toggleModal()
+
+        //     return true;
+        // }
     })
 
     
