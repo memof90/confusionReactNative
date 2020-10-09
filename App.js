@@ -3,13 +3,18 @@ import Main from './components/MainComponent';
 // redux 
 import { Provider } from 'react-redux';
 import { ConfigureStore } from './redux/configureStore';
+// import { PersistGate } from 'redux-persist/es/integration/react';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Loading } from './components/LoadingComponent';
 
-const store = ConfigureStore();
+const {store, persistor} = ConfigureStore();
 
 export default function App() {
   return (
     <Provider store={store}>
-       <Main />
+    <PersistGate loading={<Loading />} persistor={persistor}  >
+        <Main />
+    </PersistGate> 
     </Provider>
    
   );
