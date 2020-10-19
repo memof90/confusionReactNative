@@ -6,6 +6,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 // import DateTimePickerModal from "react-native-modal-datetime-picker";
 //animated table 
 import * as Animatable from 'react-native-animatable';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+
 const options = {month: 'short', day: '2-digit',year: 'numeric' };
 
 class Reservation extends Component {
@@ -39,7 +42,9 @@ class Reservation extends Component {
                 },
                 {
                     text:'OK',
-                    onPress: () =>  this.toggleModal()
+                    onPress: () =>  {
+                        this.toggleModal();
+                        this.presentLocalNotification(this.state.date)}
                 }
             ],
             {cancelable: false}
@@ -59,6 +64,33 @@ class Reservation extends Component {
             smoking: false,
             date: new Date(1598051730000),
             showModal: false
+        });
+    }
+
+    async obtainNotificationPermission() {
+        let permission = await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS);
+        if (permission.status !== 'granted') {
+            permission = await Permissions.askAsync(Permissions.USER_FACING_NOTIFICATIONS);
+            if (permission.status !== 'granted') {
+                Alert.alert('Permission not granted to show notifications');
+            }
+        }
+        return permission;
+    }
+
+    async presentLocalNotification(date) {
+        await this.obtainNotificationPermission();
+       Notifications.presentNotificationAsync({
+            title: 'Your Reservation',
+            body: 'Reservation for '+ date + ' requested',
+            ios: {
+                allowSound: true
+            },
+            android: {
+                allowSound: true,
+                // vibrate: true,
+                // color: '#512DA8'
+            }
         });
     }
 
