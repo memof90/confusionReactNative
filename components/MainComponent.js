@@ -18,6 +18,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList} from '@react-navigation/drawer';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+
+
 // redux 
 import { connect } from 'react-redux';
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
@@ -232,6 +234,35 @@ function AboutNavegatior({ navigation }) {
       </stackLogin.Navigator>
       )
     }
+
+    const stackRegister = createStackNavigator();
+
+    function RegisterNavigator({navigation}) {
+      return(
+        <stackRegister.Navigator screenOptions={{
+          headerLeft: () => (
+        <Button
+        type="clear"
+          icon={
+            <Icon 
+              name="menu"
+              size={24}
+              color="white"
+              backgroundColor='#512DA8'
+            />
+          }
+          onPress={() => navigation.openDrawer() }
+        />
+      ),  
+            headerStyle: { backgroundColor: '#512DA8' }, 
+            headerTintColor: '#ffffff', 
+            headerTitleStyle: {color: '#ffffff'}}} >
+        <stackRegister.Screen name="Register" component={LoginTab} options={{title: 'register'}} />
+      </stackRegister.Navigator>
+      )
+    }
+
+    export {LoginNavigator, RegisterNavigator}
 
 
     const CustomDrawerContentComponent = (props) => (
