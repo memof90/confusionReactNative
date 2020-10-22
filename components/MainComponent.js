@@ -8,7 +8,7 @@ import Reservation from './ReservationComponent';
 import Favorites from './FavoritesComponent';
 import Login from './LoginComponent';
 
-import { View, Platform, Image, StyleSheet,ScrollView , Text} from 'react-native';
+import { View, Platform, Image, StyleSheet,ScrollView , Text, ToastAndroid} from 'react-native';
 import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import  { Icon, Button } from 'react-native-elements';
@@ -18,6 +18,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList} from '@react-navigation/drawer';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+// netInfo 
+import NetInfo from '@react-native-community/netinfo';
 
 
 // redux 
@@ -329,7 +331,60 @@ class Main extends Component {
       this.props.fetchComments();
       this.props.fetchPromos();
       this.props.fetchLeaders();
+
+      // NetInfo.getConnectionInfo().then((connectionInfo) => {
+      //   ToastAndroid.show('Initial Network Conectivity Type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType, 
+      //     ToastAndroid.LONG
+      //   )
+      // });
+      NetInfo.fetch().then(connectionInfo => {
+        if (Platform.OS == 'android'){
+          //ur android code here
+          ToastAndroid.show('Initial Network Conectivity Type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.isConnected, 
+          ToastAndroid.LONG
+        )
+      }
+
+        console.log('Connection type', connectionInfo.type);
+        console.log('Is connected?', connectionInfo.isConnected);
+      });
+    //  NetInfo.addEventListener('connectionChange', this.handleConnectivityChange);
+     
     }
+
+    componentWillUnmount(){
+      const unsubscribe = NetInfo.addEventListener(connectionChange => {
+        connectionChange.type,
+        connectionChange.isConnected,
+        this.handleConnectivityChange
+        console.log('Connection type', connectionChange.type);
+        console.log('Is connected?', connectionChange.isConnected);
+      });
+      // NetInfo.removeEventListener('connectionChange', this.handleConnectivityChange);
+      
+      // To unsubscribe to these update, just use:
+      unsubscribe();
+    }
+
+    handleConnectivityChange = (connectionInfo) => {
+      switch (connectionInfo.type) {
+        case 'none':
+          ToastAndroid.show('You are now offline!', ToastAndroid.LONG);
+          break;
+        case 'wifi':
+          ToastAndroid.show('You are connected now wifi!', ToastAndroid.LONG);
+          break;
+        case 'cellular':
+          ToastAndroid.show('You are now connected cellular!', ToastAndroid.LONG);
+          break;
+        case 'unknow':
+          ToastAndroid.show('You now have an  unknow! connected', ToastAndroid.LONG);
+          break;
+        default:
+          break;
+      }
+    }
+
     render() { 
         return (  
             <View style={{flex:1, paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight }}>
