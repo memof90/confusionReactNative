@@ -4,8 +4,10 @@ import { Card, Icon, Input, CheckBox, Button, } from 'react-native-elements';
 import * as SecureStore from 'expo-secure-store';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
+import { Camera } from 'expo-camera';
+import { Asset } from 'expo-asset';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
 import { baseUrl } from '../shared/baseUrl';
 
 // import { LoginNavigator, RegisterNavigator } from './MainComponent';
@@ -131,9 +133,23 @@ class ResgiterTab extends Component {
             });
 
             if ( !captureImage.cancelled){
-                this.setState({ imageUrl: captureImage.uri })
+                //capture image
+                // this.setState({ imageUrl: captureImage.uri })
+                this.processImage(captureImage.uri);
             }
         }
+    }
+
+    processImage = async (imageUri) => {
+        const processedImage  = await ImageManipulator.manipulateAsync(
+            imageUri,
+            [
+                {resize: {width: 400}}
+            ],
+            {format: ImageManipulator.SaveFormat.PNG}
+        );
+        console.log(processedImage);
+        this.setState({imageUrl: processedImage.uri})
     }
 
     handleRegister() {
