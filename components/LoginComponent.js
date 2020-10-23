@@ -118,7 +118,8 @@ class ResgiterTab extends Component {
             lastname: '',
             email: '',
             remember: false,
-            imageUrl: baseUrl + 'images/logo.png'
+            imageUrl: baseUrl + 'images/logo.png',
+            image: null
          }
     }
 
@@ -151,6 +152,21 @@ class ResgiterTab extends Component {
         console.log(processedImage);
         this.setState({imageUrl: processedImage.uri})
     }
+    
+    pickerImage = async () => {
+  
+        const camerarequestPemrisison = await ImagePicker.requestCameraRollPermissionsAsync();
+
+        if(camerarequestPemrisison.status === 'granted'){
+            let pickImage = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                aspect: [4,3]
+            });
+            if (!pickImage.cancelled){
+                this.setState({imageUrl: pickImage.uri});
+            }
+        }
+    }
 
     handleRegister() {
         console.log(JSON.stringify(this.state));
@@ -176,6 +192,11 @@ class ResgiterTab extends Component {
                 <Button 
                     title='Camera'
                     onPress={this.getImageFromCamera}
+                />
+                <Button 
+                style={{marginLeft: 30}}
+                    title='Gallery'
+                    onPress={this.pickerImage}
                 />
             </View>
                 <Input 
