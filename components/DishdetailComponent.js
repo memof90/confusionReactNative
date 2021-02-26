@@ -1,12 +1,12 @@
 import React, { Component, useState, useRef } from 'react';
-import { View, Text, ScrollView, FlatList, Modal, StyleSheet, TouchableHighlight, TextInput, Alert, PanResponder, Button, Share} from 'react-native';
+import { View, Text, ScrollView, FlatList, Modal, StyleSheet, TouchableHighlight, TextInput, Alert, PanResponder, Button, Share,SafeAreaView} from 'react-native';
 import { Card, Icon, Rating, AirbnbRating } from 'react-native-elements';
 import { DISHES } from '../shared/dishes';
 import { COMMENTS } from '../shared/comments';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { postComment, postFavorite } from '../redux/ActionCreators';
-import {Picker} from '@react-native-community/picker';
+import {Picker} from '@react-native-picker/picker';
 
 //animated table 
 import * as Animatable from 'react-native-animatable';
@@ -292,21 +292,36 @@ class Dishdetail extends Component{
 
     render(){
         const dishId = this.props.route.params.dishId;
-        return(
-            <ScrollView>
+        const renderDishes = () => {
+            return(
               <RenderDish dish={this.props.dishes.dishes[+dishId]} 
                  favorite={this.props.favorites.some(el => el === dishId)}
                  showModal={this.state.showModal}
                 onPress={() => {this.markFavorite(dishId)}}
                 toggleModal={() => {this.toggleModal()}}
                /> 
-              <RenderComments comments={this.props.comments.comments.filter((comment) => comment.dishId === dishId)} 
+            )
+        }
+
+        const renderComments = () => {
+            return (
+
+                <RenderComments comments={this.props.comments.comments.filter((comment) => comment.dishId === dishId)} 
                   postComment={this.props.postComment}
                   rating={this.state.rating}
                   author={this.state.author}
                   comment={this.state.comment}
                   dishId={this.state.dishId}
               />
+            )
+        }
+        return(
+            <View>
+            <FlatList 
+                ListHeaderComponent={renderDishes}
+                ListFooterComponent={renderComments}
+            />
+
                <View >
             <Modal
                 animationType="slide"
@@ -400,8 +415,8 @@ class Dishdetail extends Component{
                 </View>
                 </View>
             </Modal>
+                </View>
             </View>
-            </ScrollView>
             
         );
     }

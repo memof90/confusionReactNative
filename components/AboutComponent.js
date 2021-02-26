@@ -53,13 +53,6 @@ function History(item) {
 
 
 class About extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { 
-            // leaders: LEADERS
-         }
-    }
-
 
     render() { 
         const renderAboutItem = ({item, index}) => {
@@ -107,12 +100,9 @@ class About extends Component {
         }
 
         else {
-            return (
-            <ScrollView >
-           <View>
-           <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
-            <History />
-                <Card>
+            const renderList = () => {
+                return(
+                 <Card>
                 <Card.Title>Corporated Leadership</Card.Title>
                 <Card.Divider></Card.Divider>
                     <FlatList 
@@ -121,9 +111,25 @@ class About extends Component {
                         keyExtractor={item => item.id.toString()}
                     />
                 </Card>
+                )
+            }
+
+            const histo = () => {
+                return(
+                    <History />
+                )
+            }
+            return (
+          
+           <View>
+           <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+           <FlatList 
+               ListHeaderComponent={histo}
+               ListFooterComponent={renderList}
+           />
+               
            </Animatable.View>
             </View>
-            </ScrollView>
         );
         
         }

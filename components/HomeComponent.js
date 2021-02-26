@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, Animated, Easing, YellowBox} from 'react-native';
+import { View, Text, ScrollView, Animated, Easing, LogBox} from 'react-native';
 
 import { Card } from 'react-native-elements'
 import { DISHES } from '../shared/dishes';
@@ -75,7 +75,6 @@ class Home extends Component {
 
     componentDidMount() {
         this.animated();
-        YellowBox.ignoreWarnings(['Animated: `useNativeDriver`']);
     }
 
     animated() {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text,  View, ScrollView, StyleSheet, Switch, Button, Modal, Alert, Appearance } from 'react-native';
 import {Card } from 'react-native-elements';
-import {Picker} from '@react-native-community/picker';
+import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 // import DateTimePickerModal from "react-native-modal-datetime-picker";
 //animated table 
@@ -18,7 +18,7 @@ class Reservation extends Component {
         this.state = { 
             guests: 1,
             smoking: false,
-            date: new Date(1598051730000),
+            date: new Date('2020-06-12T14:42:42'),
             showModal: false,
             show: false,
             mode: 'date',
@@ -254,16 +254,14 @@ class Reservation extends Component {
               <Icon name='calendar-plus' type='font-awesome-5' size={22} style={{margin:10, justifyContent: 'flex-start'}} />
               <Text>{reservationDate}</Text>
             </TouchableOpacity>*/}
-          {this.state.show &&
-            <DateTimePicker
+          {this.state.show && <DateTimePicker
               value={this.state.date}
               mode={this.state.mode}
               is24Hour={true}
-              display='default'
+              display='inline'
               onChange={this.setDate}
               style={{width: 320, backgroundColor: "white"}} 
             />
-            
           }
         </View>
                 {/* <View style={styles.formRow}>

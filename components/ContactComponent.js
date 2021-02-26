@@ -10,7 +10,6 @@ import * as Animatable from 'react-native-animatable';
  function RenderContact(item) {
      if (item != null ) {
           return(
-            <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
                 <Card>
                 <Card.Title>Contact Information</Card.Title>
                 <Card.Divider></Card.Divider>
@@ -20,9 +19,6 @@ import * as Animatable from 'react-native-animatable';
                 <Text style={{marginBottom: 10}}>Tel: +852 1234 5678</Text>
                 <Text style={{marginBottom: 10}}>Fax: +852 8765 4321</Text>
                 </Card>
-            </Animatable.View>
-
-       
         );
      }
      else {
@@ -63,6 +59,7 @@ class Contact extends Component {
             //     <Text style={{marginBottom: 10}}>Fax: +852 8765 4321</Text>
             // </Card>
             <View>
+            <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
              <RenderContact />
              <Button 
                  title="send Email"
@@ -75,6 +72,7 @@ class Contact extends Component {
                         }}
                     onPress={this.sendMail}
              />
+         </Animatable.View>
             </View>
        
            
